@@ -78,6 +78,10 @@ spec:
           image: '{{ _init_container_image }}'
           imagePullPolicy: '{{ image_pull_policy }}'
           resources: {{ init_container_resource_requirements }}
+{% if init_security_context_settings|length %}
+          securityContext:
+{{ init_security_context_settings | to_yaml | indent(12,true) }}
+{%- endif %}
           command:
             - /bin/sh
             - -c
@@ -124,6 +128,10 @@ spec:
           image: '{{ _init_projects_container_image }}'
           imagePullPolicy: '{{ image_pull_policy }}'
           resources: {{ init_container_resource_requirements }}
+{% if init_security_context_settings|length %}
+          securityContext:
+{{ init_security_context_settings | to_yaml | indent(12,true) }}
+{%- endif %}
           command:
             - /bin/sh
             - -c
@@ -143,11 +151,10 @@ spec:
         - image: '{{ _redis_image }}'
           imagePullPolicy: '{{ image_pull_policy }}'
           name: redis
-{% if redis_capabilities is defined and redis_capabilities %}
+{% if redis_security_context_settings|length %}
           securityContext:
-            capabilities:
-              add: {{ redis_capabilities }}
-{% endif %}
+{{ redis_security_context_settings | to_yaml | indent(12,true) }}
+{%- endif %}
           args: ["redis-server", "/etc/redis.conf"]
           volumeMounts:
             - name: {{ ansible_operator_meta.name }}-redis-config
@@ -179,10 +186,10 @@ spec:
         - image: '{{ _image }}'
           name: '{{ ansible_operator_meta.name }}-task'
           imagePullPolicy: '{{ image_pull_policy }}'
-{% if task_privileged == true %}
+{% if task_security_context_settings|length %}
           securityContext:
-            privileged: true
-{% endif %}
+{{ task_security_context_settings | to_yaml | indent(12,true) }}
+{%- endif %}
 {% if task_command %}
           command: {{ task_command }}
 {% endif %}
@@ -282,6 +289,10 @@ spec:
           name: '{{ ansible_operator_meta.name }}-ee'
           imagePullPolicy: '{{ image_pull_policy }}'
           resources: {{ ee_resource_requirements }}
+{% if ee_security_context_settings|length %}
+          securityContext:
+{{ ee_security_context_settings | to_yaml | indent(12,true) }}
+{%- endif %}
           args:
             - /bin/sh
             - -c
@@ -354,6 +365,10 @@ spec:
 {% endif %}
           imagePullPolicy: '{{ image_pull_policy }}'
           resources: {{ rsyslog_resource_requirements }}
+{% if rsyslog_security_context_settings|length %}
+          securityContext:
+{{ rsyslog_security_context_settings | to_yaml | indent(12,true) }}
+{%- endif %}
           volumeMounts:
             - name: "{{ ansible_operator_meta.name }}-application-credentials"
               mountPath: "/etc/tower/conf.d/credentials.py"
