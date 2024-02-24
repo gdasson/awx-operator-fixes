@@ -435,6 +435,11 @@ spec:
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:advanced
         - urn:alm:descriptor:com.tectonic.ui:resourceRequirements
+      - displayName: Web Security Context Settings
+        path: web_security_context_settings
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:advanced
+        - urn:alm:descriptor:com.tectonic.ui:hidden 
       - displayName: Task Container Resource Requirements
         path: task_resource_requirements
         x-descriptors:
@@ -457,11 +462,21 @@ spec:
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:advanced
         - urn:alm:descriptor:com.tectonic.ui:resourceRequirements
+      - displayName: Redis Security Context Settings
+        path: redis_security_context_settings
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:advanced
+        - urn:alm:descriptor:com.tectonic.ui:hidden 
       - displayName: Rsyslog Container Resource Requirements
         path: rsyslog_resource_requirements
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:advanced
         - urn:alm:descriptor:com.tectonic.ui:resourceRequirements
+      - displayName: Rsyslog Security Context Settings
+        path: rsyslog_security_context_settings
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:advanced
+        - urn:alm:descriptor:com.tectonic.ui:hidden 
       - description: The PostgreSQL container is not used when an external DB is configured
         displayName: PostgreSQL Container Resource Requirements
         path: postgres_resource_requirements
@@ -745,6 +760,11 @@ spec:
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:advanced
         - urn:alm:descriptor:com.tectonic.ui:hidden
+      - displayName: EE Security Context Settings
+        path: ee_security_context_settings
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:advanced
+        - urn:alm:descriptor:com.tectonic.ui:hidden 
       - description: Registry path to the Execution Environment container to use
         displayName: EE Images
         path: ee_images
@@ -776,6 +796,11 @@ spec:
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:advanced
         - urn:alm:descriptor:com.tectonic.ui:hidden
+      - displayName: Task Security Context Settings
+        path: task_security_context_settings
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:advanced
+        - urn:alm:descriptor:com.tectonic.ui:hidden 
       - displayName: Web Args
         path: web_args
         x-descriptors:
@@ -982,6 +1007,11 @@ spec:
         x-descriptors:
         - urn:alm:descriptor:com.tectonic.ui:advanced
         - urn:alm:descriptor:com.tectonic.ui:hidden
+      - displayName: Init Security Context Settings
+        path: init_security_context_settings
+        x-descriptors:
+        - urn:alm:descriptor:com.tectonic.ui:advanced
+        - urn:alm:descriptor:com.tectonic.ui:hidden 
       - description: Secret where can be found the trusted Certificate Authority Bundle
         path: bundle_cacert_secret
         x-descriptors:
