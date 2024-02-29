@@ -85,9 +85,9 @@ spec:
           image: '{{ _init_container_image }}'
           imagePullPolicy: '{{ image_pull_policy }}'
           resources: {{ init_container_resource_requirements }}
-{% if init_security_context_settings|length %}
+{% if init_security_context|length %}
           securityContext:
-{{ init_security_context_settings | to_yaml | indent(12,true) }}
+{{ init_security_context | to_yaml | indent(12,true) }}
 {%- endif %}
           command:
             - /bin/sh
@@ -118,9 +118,9 @@ spec:
           image: '{{ _init_projects_container_image }}'
           imagePullPolicy: '{{ image_pull_policy }}'
           resources: {{ init_container_resource_requirements }}
-{% if init_security_context_settings|length %}
+{% if init_security_context|length %}
           securityContext:
-{{ init_security_context_settings | to_yaml | indent(12,true) }}
+{{ init_security_context | to_yaml | indent(12,true) }}
 {%- endif %}
           command:
             - /bin/sh
@@ -141,10 +141,17 @@ spec:
         - image: '{{ _redis_image }}'
           imagePullPolicy: '{{ image_pull_policy }}'
           name: redis
-{% if redis_security_context_settings|length %}
+{% if redis_security_context|length or redis_capabilities is defined %}
           securityContext:
-{{ redis_security_context_settings | to_yaml | indent(12,true) }}
+{% if redis_security_context|length %}
+{{ redis_security_context | to_nice_yaml | indent(12,true) }}
 {%- endif %}
+{% if redis_capabilities is defined and redis_capabilities %}
+            capabilities:
+              add: 
+{{ redis_capabilities | to_yaml | indent(16,true) }}
+{%- endif %}
+{% endif %}
           args: ["redis-server", "/etc/redis.conf"]
           volumeMounts:
             - name: {{ ansible_operator_meta.name }}-redis-config
@@ -268,9 +275,9 @@ spec:
             {{ web_extra_env | indent(width=12, first=True) }}
 {% endif %}
           resources: {{ web_resource_requirements }}
-{% if web_security_context_settings|length %}
+{% if web_security_context|length %}
           securityContext:
-{{ web_security_context_settings | to_yaml | indent(12,true) }}
+{{ web_security_context | to_yaml | indent(12,true) }}
 {%- endif %}
         - image: '{{ _image }}'
           name: '{{ ansible_operator_meta.name }}-rsyslog'
@@ -282,9 +289,9 @@ spec:
 {% endif %}
           imagePullPolicy: '{{ image_pull_policy }}'
           resources: {{ rsyslog_resource_requirements }}
-{% if rsyslog_security_context_settings|length %}
+{% if rsyslog_security_context|length %}
           securityContext:
-{{ rsyslog_security_context_settings | to_yaml | indent(12,true) }}
+{{ rsyslog_security_context | to_yaml | indent(12,true) }}
 {%- endif %}
           volumeMounts:
             - name: "{{ ansible_operator_meta.name }}-application-credentials"
